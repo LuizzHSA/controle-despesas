@@ -1,213 +1,206 @@
-import java.util.Scanner;
 import java.time.LocalDate;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.util.Scanner;
 
+/**
+ * Programa principal com menu que cumpre todos os requisitos.
+ */
 public class Main {
-
-    private static Scanner scanner = new Scanner(System.in);
-    private static DespesaService despesaService = new DespesaService();
-    private static TipoDespesaService tipoDespesaService = new TipoDespesaService();
-    private static UsuarioService usuarioService = new UsuarioService();
+    private static final SistemaController sistema = new SistemaController();
+    private static final Scanner sc = new Scanner(System.in);
+    private static final DateTimeFormatter dtf = DateTimeFormatter.ISO_LOCAL_DATE;
 
     public static void main(String[] args) {
-        System.out.println("=========================================");
-        System.out.println("   SISTEMA DE CONTROLE DE DESPESAS");
-        System.out.println("=========================================\n");
-
-        // Login simples antes de entrar no menu
-        if (!fazerLogin()) {
-            System.out.println("Encerrando o sistema...");
-            return;
-        }
-
-        int opcao;
+        System.out.println("=== Sistema de Controle de Despesas — v0.0.1 (entrega completa) ===");
+        int opc;
         do {
-            exibirMenuPrincipal();
-            opcao = lerInteiro("Escolha uma opção: ");
-
-            switch (opcao) {
-                case 1:
-                    entrarDespesa();
-                    break;
-                case 2:
-                    anotarPagamento();
-                    break;
-                case 3:
-                    listarDespesasPorStatus(false);
-                    break;
-                case 4:
-                    listarDespesasPorStatus(true);
-                    break;
-                case 5:
-                    gerenciarTiposDespesa();
-                    break;
-                case 6:
-                    gerenciarUsuarios();
-                    break;
-                case 7:
-                    System.out.println("Saindo do sistema...");
-                    break;
-                default:
-                    System.out.println("Opção inválida! Tente novamente.");
+            mostrarMenu();
+            opc = lerInt("Escolha: ");
+            switch (opc) {
+                case 1 -> entrarDespesa();
+                case 2 -> anotarPagamento();
+                case 3 -> listarDespesasPeriodo(false);
+                case 4 -> listarDespesasPeriodo(true);
+                case 5 -> gerenciarTipos();
+                case 6 -> gerenciarUsuarios();
+                case 7 -> System.out.println("Saindo...");
+                default -> System.out.println("Opção inválida.");
             }
-
-        } while (opcao != 7);
+        } while (opc != 7);
+        sc.close();
     }
 
-    private static void exibirMenuPrincipal() {
-        System.out.println("\n===== MENU PRINCIPAL =====");
+    private static void mostrarMenu() {
+        System.out.println("\n--- MENU PRINCIPAL ---");
         System.out.println("1. Entrar Despesa");
         System.out.println("2. Anotar Pagamento");
-        System.out.println("3. Listar Despesas em Aberto");
-        System.out.println("4. Listar Despesas Pagas");
+        System.out.println("3. Listar Despesas em Aberto no período");
+        System.out.println("4. Listar Despesas Pagas no período");
         System.out.println("5. Gerenciar Tipos de Despesa");
         System.out.println("6. Gerenciar Usuários");
         System.out.println("7. Sair");
-        System.out.println("==========================");
     }
 
-    // ---------------- LOGIN ----------------
-
-    private static boolean fazerLogin() {
-        System.out.println("==== LOGIN ====");
-        System.out.print("Usuário: ");
-        String login = scanner.nextLine();
-        System.out.print("Senha: ");
-        String senha = scanner.nextLine();
-
-        if (usuarioService.verificarLogin(login, senha)) {
-            System.out.println("Login realizado com sucesso!");
-            return true;
-        } else {
-            System.out.println("Login inválido.");
-            return false;
-        }
-    }
-
-    // ---------------- DESPESAS ----------------
-
+    // ---------- Entrar Despesa ----------
     private static void entrarDespesa() {
-        System.out.println("\n=== ENTRAR DESPESA ===");
-        System.out.print("Descrição: ");
-        String descricao = scanner.nextLine();
+        System.out.println("\n--- ENTRAR DESPESA ---");
+        String desc = lerTexto("Descrição: ");
         double valor = lerDouble("Valor: ");
-        System.out.print("Data de vencimento (AAAA-MM-DD): ");
-        LocalDate data = LocalDate.parse(scanner.nextLine());
+        LocalDate venc = lerData("Data de vencimento (YYYY-MM-DD): ");
+        sistema.listarTipos();
+        String tipoNome = lerTexto("Nome do tipo (digite um existente ou novo): ");
+        TipoDespesa tipo = sistema.obterOuCriarTipoPorNome(tipoNome);
+        String detalhe = lerTexto("Detalhe específico (meio, local, motivo) - opcional: ");
 
-        System.out.println("Selecione o tipo de despesa:");
-        tipoDespesaService.listarTipos();
-        int tipoId = lerInteiro("ID do tipo: ");
-
-        TipoDespesa tipo = tipoDespesaService.buscarPorId(tipoId);
-        if (tipo == null) {
-            System.out.println("Tipo inválido!");
-            return;
-        }
-
-        Despesa despesa = new Despesa(descricao, valor, data, tipo);
-        despesaService.inserir(despesa);
-        System.out.println("Despesa cadastrada com sucesso!");
-    }
-
-    private static void anotarPagamento() {
-        System.out.println("\n=== ANOTAR PAGAMENTO ===");
-        despesaService.listarTodas();
-
-        int id = lerInteiro("ID da despesa: ");
-        double valor = lerDouble("Valor do pagamento: ");
-        System.out.print("Data do pagamento (AAAA-MM-DD): ");
-        LocalDate data = LocalDate.parse(scanner.nextLine());
-
-        boolean ok = despesaService.anotarPagamento(id, valor, data);
-        if (ok) {
-            System.out.println("Pagamento registrado!");
+        // escolher subclasse pela string do tipo
+        String tn = tipo.getNome().toLowerCase();
+        Despesa d;
+        if (tn.contains("transport")) {
+            d = new Transporte(desc, valor, venc, tipo, detalhe.isBlank() ? "Não informado" : detalhe);
+        } else if (tn.contains("aliment")) {
+            d = new Alimentacao(desc, valor, venc, tipo, detalhe.isBlank() ? "Não informado" : detalhe);
         } else {
-            System.out.println("Erro ao registrar pagamento. Verifique o ID e valores.");
+            d = new Eventual(desc, valor, venc, tipo, detalhe.isBlank() ? "Não informado" : detalhe);
+        }
+        sistema.inserirDespesa(d);
+    }
+
+    // ---------- Anotar Pagamento ----------
+    private static void anotarPagamento() {
+        System.out.println("\n--- ANOTAR PAGAMENTO ---");
+        sistema.listarDespesasTodas();
+        int id = lerInt("ID da despesa: ");
+        double valor = lerDouble("Valor do pagamento: ");
+        LocalDate data = lerData("Data do pagamento (YYYY-MM-DD): ");
+        sistema.anotarPagamento(id, valor, data);
+    }
+
+    // ---------- Listar (com submenu: Editar / Excluir / Voltar) ----------
+    private static void listarDespesasPeriodo(boolean pagas) {
+        System.out.println(pagas ? "\n--- DESPESAS PAGAS ---" : "\n--- DESPESAS EM ABERTO ---");
+        LocalDate inicio = lerData("Data início (YYYY-MM-DD): ");
+        LocalDate fim = lerData("Data fim (YYYY-MM-DD): ");
+        sistema.listarDespesasPorStatusEPeriodo(pagas, inicio, fim);
+
+        System.out.println("\nSubmenu: 1) Editar  2) Excluir  3) Voltar");
+        int sub = lerInt("Escolha: ");
+        if (sub == 1) {
+            int id = lerInt("ID da despesa a editar: ");
+            String novaDesc = lerTexto("Nova descrição (enter p/ manter): ");
+            String novoValStr = lerTexto("Novo valor (enter p/ manter): ");
+            Double novoVal = novoValStr.isBlank() ? null : Double.parseDouble(novoValStr.replace(",", "."));
+            String novaDataStr = lerTexto("Nova data (YYYY-MM-DD) (enter p/ manter): ");
+            LocalDate novaData = novaDataStr.isBlank() ? null : LocalDate.parse(novaDataStr, dtf);
+            String novoTipoNome = lerTexto("Novo tipo (enter p/ manter): ");
+            TipoDespesa novoTipo = novoTipoNome.isBlank() ? null : sistema.obterOuCriarTipoPorNome(novoTipoNome);
+            sistema.editarDespesa(id, novaDesc.isBlank() ? null : novaDesc, novoVal, novaData, novoTipo);
+        } else if (sub == 2) {
+            int id = lerInt("ID da despesa a excluir: ");
+            sistema.excluirDespesa(id);
+        } else {
+            System.out.println("Voltando ao menu.");
         }
     }
 
-    private static void listarDespesasPorStatus(boolean pagas) {
-        System.out.println(pagas ? "\n=== DESPESAS PAGAS ===" : "\n=== DESPESAS EM ABERTO ===");
-        List<Despesa> lista = despesaService.listarPorStatus(pagas);
-        for (Despesa d : lista) {
-            System.out.println(d);
-        }
-    }
-
-    // ---------------- TIPOS DE DESPESA ----------------
-
-    private static void gerenciarTiposDespesa() {
-        System.out.println("\n=== GERENCIAR TIPOS DE DESPESA ===");
-        System.out.println("1. Criar novo tipo");
+    // ---------- Gerenciar Tipos ----------
+    private static void gerenciarTipos() {
+        System.out.println("\n--- GERENCIAR TIPOS ---");
+        System.out.println("1. Criar tipo");
         System.out.println("2. Listar tipos");
-        System.out.println("3. Excluir tipo");
-        int opcao = lerInteiro("Escolha: ");
-
-        switch (opcao) {
-            case 1:
-                System.out.print("Nome: ");
-                String nome = scanner.nextLine();
-                System.out.print("Descrição: ");
-                String desc = scanner.nextLine();
-                tipoDespesaService.criarTipo(new TipoDespesa(nome, desc));
-                break;
-            case 2:
-                tipoDespesaService.listarTipos();
-                break;
-            case 3:
-                int id = lerInteiro("ID do tipo a excluir: ");
-                tipoDespesaService.excluirTipo(id);
-                break;
-            default:
-                System.out.println("Opção inválida.");
+        System.out.println("3. Editar tipo");
+        System.out.println("4. Excluir tipo");
+        System.out.println("0. Voltar");
+        int opc = lerInt("Escolha: ");
+        switch (opc) {
+            case 1 -> {
+                String nome = lerTexto("Nome do tipo: ");
+                String desc = lerTexto("Descrição (opcional): ");
+                sistema.criarTipo(nome, desc);
+            }
+            case 2 -> sistema.listarTipos();
+            case 3 -> {
+                int id = lerInt("ID do tipo a editar: ");
+                String novo = lerTexto("Novo nome: ");
+                String desc = lerTexto("Nova descrição: ");
+                sistema.editarTipo(id, novo, desc);
+            }
+            case 4 -> {
+                int id = lerInt("ID do tipo a excluir: ");
+                sistema.excluirTipo(id);
+            }
+            default -> System.out.println("Voltando.");
         }
     }
 
-    // ---------------- USUÁRIOS ----------------
-
+    // ---------- Gerenciar Usuários ----------
     private static void gerenciarUsuarios() {
-        System.out.println("\n=== GERENCIAR USUÁRIOS ===");
-        System.out.println("1. Cadastrar novo usuário");
+        System.out.println("\n--- GERENCIAR USUÁRIOS ---");
+        System.out.println("1. Cadastrar usuário");
         System.out.println("2. Listar usuários");
-        int opcao = lerInteiro("Escolha: ");
-
-        switch (opcao) {
-            case 1:
-                System.out.print("Login: ");
-                String login = scanner.nextLine();
-                System.out.print("Senha: ");
-                String senha = scanner.nextLine();
-                usuarioService.cadastrarUsuario(login, senha);
-                break;
-            case 2:
-                usuarioService.listarUsuarios();
-                break;
-            default:
-                System.out.println("Opção inválida.");
+        System.out.println("3. Editar usuário");
+        System.out.println("4. Excluir usuário");
+        System.out.println("0. Voltar");
+        int opc = lerInt("Escolha: ");
+        switch (opc) {
+            case 1 -> {
+                String login = lerTexto("Login: ");
+                String senha = lerTexto("Senha: ");
+                sistema.cadastrarUsuario(login, senha);
+            }
+            case 2 -> sistema.listarUsuarios();
+            case 3 -> {
+                int id = lerInt("ID do usuário a editar: ");
+                String novoLogin = lerTexto("Novo login: ");
+                String novaSenha = lerTexto("Nova senha: ");
+                sistema.editarUsuario(id, novoLogin, novaSenha);
+            }
+            case 4 -> {
+                int id = lerInt("ID do usuário a excluir: ");
+                sistema.excluirUsuario(id);
+            }
+            default -> System.out.println("Voltando.");
         }
     }
 
-    // ---------------- MÉTODOS DE APOIO ----------------
-
-    private static int lerInteiro(String msg) {
-        System.out.print(msg);
-        while (!scanner.hasNextInt()) {
-            System.out.println("Por favor, digite um número inteiro válido.");
-            scanner.next();
+    // ---------- Helpers de leitura ----------
+    private static int lerInt(String msg) {
+        while (true) {
+            try {
+                System.out.print(msg);
+                String s = sc.nextLine().trim();
+                return Integer.parseInt(s);
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Digite um número inteiro.");
+            }
         }
-        int valor = scanner.nextInt();
-        scanner.nextLine(); // limpa buffer
-        return valor;
     }
 
     private static double lerDouble(String msg) {
-        System.out.print(msg);
-        while (!scanner.hasNextDouble()) {
-            System.out.println("Por favor, digite um número válido.");
-            scanner.next();
+        while (true) {
+            try {
+                System.out.print(msg);
+                String s = sc.nextLine().trim().replace(",", ".");
+                return Double.parseDouble(s);
+            } catch (Exception e) {
+                System.out.println("Entrada inválida. Digite um número (ex: 123.45).");
+            }
         }
-        double valor = scanner.nextDouble();
-        scanner.nextLine(); // limpa buffer
-        return valor;
+    }
+
+    private static String lerTexto(String msg) {
+        System.out.print(msg);
+        return sc.nextLine().trim();
+    }
+
+    private static LocalDate lerData(String msg) {
+        while (true) {
+            try {
+                System.out.print(msg);
+                String s = sc.nextLine().trim();
+                return LocalDate.parse(s, dtf);
+            } catch (Exception e) {
+                System.out.println("Data inválida. Use YYYY-MM-DD.");
+            }
+        }
     }
 }
