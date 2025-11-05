@@ -1,0 +1,14 @@
+=== DONE - Histórico de Entregas ===
+
+🧩 v0.0.1 — Estrutura Inicial
+✔ Repositório criado e clonado
+✔ Menu principal funcional
+✔ Classes modeladas e documentadas
+✔ Persistência base em arquivos TXT
+✔ Criptografia MD5 implementada
+
+🚀 v0.0.2 — Planejamento Estruturado
+✔ Criada pasta /tasks com Kanban, Backlog e Done
+✔ Criado roadmap técnico
+✔ Atualizado README e CHANGELOG
+✔ Definida Fase 2 (PoC) e Fase 3 (MVP)

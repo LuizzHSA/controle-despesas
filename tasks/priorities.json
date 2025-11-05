@@ -1,0 +1,19 @@
+{
+  "priorities": [
+    {
+      "level": "Alta",
+      "color": "🔴",
+      "description": "Tarefas essenciais para funcionamento do sistema"
+    },
+    {
+      "level": "Média",
+      "color": "🟡",
+      "description": "Aprimoramentos e correções que podem ser feitos após o PoC"
+    },
+    {
+      "level": "Baixa",
+      "color": "🟢",
+      "description": "Ideias futuras e melhorias cosméticas"
+    }
+  ]
+}

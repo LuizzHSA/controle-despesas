@@ -1,0 +1,22 @@
+=== KANBAN - Sistema de Controle de Despesas ===
+FASE 2 → PoC e MVP
+
+🟩 TO DO
+- Refatorar Main.java para integrar camadas Service e Model
+- Criar persistência funcional em arquivos .txt
+- Implementar interface Pagável (polimorfismo real)
+- Prototipar CRUD de usuários (criptografia funcional)
+- Validar leitura/escrita em data/despesas.txt
+
+🟨 IN PROGRESS
+- Estrutura de POO ajustada (herança e sobrecarga)
+- Adaptação dos serviços com try/catch e logs simples
+
+🟦 REVIEW
+- Validar persistência e leitura dos arquivos
+- Testar fluxo de menu completo (navegação)
+
+🟪 DONE
+- Estrutura de tarefas criada
+- Planejamento PoC definido
+- README e CHANGELOG atualizados

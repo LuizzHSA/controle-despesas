@@ -1,163 +1,101 @@
-💰 Sistema de Controle de Despesas
+# 💰 Sistema de Controle de Despesas 
 
-Descrição:
-Primeira versão funcional do sistema de controle de despesas, desenvolvida em Java puro (sem frameworks), seguindo os princípios de POO (Programação Orientada a Objetos), com persistência em arquivos de texto.
+**Descrição:**  
+Sistema de controle de despesas desenvolvido em **Java (POO)** com persistência em arquivos `.txt`, criptografia de senhas e estrutura modular.  
+Esta versão adiciona a **organização de tarefas e roadmap técnico** (PoC e MVP).
 
-📦 Estrutura do Projeto
-src/
+---
+
+## 📦 Estrutura do Projeto
+
+📂 projeto-despesas/
 │
-├── Main.java # Menu principal com todas as opções
+├── src/ # Código-fonte principal
+│ ├── Main.java
+│ ├── models/
+│ ├── service/
+│ └── util/
 │
-├── models/
-│ ├── Despesa.java # Classe abstrata base
-│ ├── Transporte.java # Subclasse concreta
-│ ├── Alimentacao.java # Subclasse concreta
-│ ├── Usuario.java # Classe de usuário com senha criptografada
-│ ├── TipoDespesa.java # Classe para categorias de despesa
-│ └── Pagamento.java # Classe para registrar pagamentos
+├── data/ # Armazenamento de dados persistentes
+│ ├── despesas.txt
+│ ├── tipos_despesa.txt
+│ └── usuarios.txt
 │
-├── service/
-│ ├── DespesaService.java # CRUD de despesas
-│ ├── PagamentoService.java # Controle de pagamentos
-│ ├── TipoDespesaService.java # CRUD de tipos de despesa
-│ └── UsuarioService.java # CRUD de usuários
+├── docs/ # Documentação técnica
+│ ├── README.md
+│ ├── CHANGELOG.md
+│ └── roadmap.txt
 │
-├── util/
-│ ├── FileUtils.java # Leitura e gravação em arquivos TXT
-│ └── CriptografiaUtils.java # Criptografia simples (MD5)
-│
-└── data/
-├── despesas.txt
-├── tipos_despesa.txt
-└── usuarios.txt
+└── tasks/ # Organização do projeto
+├── kanban.txt
+├── done.txt
+└── priorities.json
 
-⚙️ Funcionalidades Implementadas
-🏠 Menu Principal
+## ⚙️ Funcionalidades Implementadas
 
-1. Entrar Despesa
-2. Anotar Pagamento
-3. Listar Despesas em Aberto no Período
-4. Listar Despesas Pagas no Período
-5. Gerenciar Tipos de Despesa
-6. Gerenciar Usuários
-7. Sair
+### 🏠 Menu Principal
+Entrar Despesa
+Anotar Pagamento
+Listar Despesas em Aberto no Período
+Listar Despesas Pagas no Período
+Gerenciar Tipos de Despesa
+Gerenciar Usuários
+Sair
 
-📋 Entrar Despesa
 
-Permite inserir uma nova despesa com:
+### 💼 Despesas
+- Inserção de despesas com descrição, valor, data e categoria  
+- Armazenamento em `data/despesas.txt`  
+- Subclasses de despesas (`Transporte`, `Alimentacao`, etc.)
 
-Descrição
+### 💳 Pagamentos
+- Registro de pagamento com data e valor  
+- Atualização automática de status da despesa  
 
-Valor
+### 👥 Usuários
+- Cadastro, edição e listagem  
+- Criptografia MD5 aplicada nas senhas  
+- Armazenamento em `data/usuarios.txt`
 
-Data de vencimento
+### ⚙️ Tipos de Despesa
+- CRUD completo  
+- Persistência em `data/tipos_despesa.txt`
 
-Categoria (alimentação, transporte, etc.)
+---
 
-💵 Anotar Pagamento
+## 🧱 Pilares de POO
+| Conceito | Implementação |
+|-----------|----------------|
+| **Abstração** | Classe `Despesa` é abstrata |
+| **Herança** | `Transporte` e `Alimentacao` herdam de `Despesa` |
+| **Polimorfismo** | Interface `Pagavel` define contrato comum |
+| **Sobrecarga/Sobrescrita** | Construtores e métodos em subclasses |
+| **Atributos Estáticos** | Contagem global de despesas |
+| **Encapsulamento** | Getters e setters em todas as classes |
 
-Registra o pagamento de uma despesa específica
+---
 
-Inclui data e valor do pagamento
+## 🧩 Planejamento (Fase 2 - PoC e MVP)
 
-📆 Listar Despesas
+📂 Diretório: [`/tasks`](../tasks)  
+Contém os arquivos de controle de progresso:
 
-Exibe despesas pagas ou em aberto
+| Arquivo | Descrição |
+|----------|------------|
+| `kanban.txt` | Tarefas organizadas por status |
+| `backlog.txt` | Ideias e pendências futuras |
+| `done.txt` | Histórico de entregas concluídas |
+| `priorities.json` | Definição de prioridades (Alta, Média, Baixa) |
 
-Filtro por período e categoria
+📂 Roadmap Técnico: [`/docs/roadmap.txt`](../docs/roadmap.txt)  
+Contém o planejamento de cada **fase (PoC, MVP, Refinamento)** com sprints técnicas e prazos definidos.
 
-Submenu:
-
-Editar Despesa
-
-Excluir Despesa
-
-Voltar ao Menu Principal
-
-⚙️ Gerenciar Tipos de Despesa
-
-Criar, editar, listar e excluir categorias
-
-Armazenamento: tipos_despesa.txt
-
-👤 Gerenciar Usuários
-
-Cadastrar, editar e listar usuários
-
-Criptografia MD5 nas senhas
-
-Armazenamento: usuarios.txt
-
-💾 Banco de Dados em Arquivos de Texto
-
-Dados persistem em:
-
-data/despesas.txt
-
-data/tipos_despesa.txt
-
-data/usuarios.txt
-
-🧱 Pilares de POO Implementados
-
-Abstração: Classe Despesa é abstrata
-
-Herança: Transporte e Alimentacao herdam de Despesa
-
-Polimorfismo: Interface Pagavel define contrato comum
-
-Sobrecarga/Sobrescrita: Construtores e métodos em subclasses
-
-Atributos Estáticos: Contagem global de despesas
-
-Encapsulamento: Atributos privados com getters/setters
-
-🧰 Execução (VS Code + Terminal)
-
-Abra o diretório no VS Code
-
-No terminal, compile:
-
-javac src/\*_/_.java
-
-Execute:
-
-java src/Main
+---
 
 🔒 Criptografia
+As senhas são armazenadas criptografadas via MD5, garantindo segurança básica.
+Implementação: util/CriptografiaUtils.java
 
-As senhas de usuário são criptografadas com MD5, implementadas na classe:
-
-util/CriptografiaUtils.java
-
-🧱 Persistência
-
-Os dados são salvos automaticamente em arquivos .txt dentro da pasta /data:
-
-/data/despesas.txt
-/data/tipos_despesa.txt
-/data/usuarios.txt
-
-🧾 CHANGELOG
-🧩 Versão 0.0.1
-
-✅ Repositório criado e clonado
-
-✅ Estrutura de pastas definida (src/models/service/util/data)
-
-✅ Menu principal completo
-
-✅ Implementadas todas as opções do menu com print e lógicas básicas
-
-✅ CRUD completo de Despesas, Tipos e Usuários
-
-✅ Persistência em arquivos .txt
-
-✅ Criptografia MD5 implementada
-
-✅ Documentação inicial (README + CHANGELOG)
-
-👨‍💻 Autor
-
-Luiz Henrique Lopes de Sá
-📧 prof.roldjunior@uninga.edu.br
+📈 Versões
+0.0.1	Estrutura base e menu principal
+0.0.2	Estrutura de tarefas (PoC/MVP) e roadmap técnico
