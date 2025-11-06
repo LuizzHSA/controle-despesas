@@ -1,0 +1,53 @@
+# 🧭 Roadmap Técnico — Sistema de Controle de Despesas
+
+---
+
+## 🧱 Fase 1 — Base (v0.0.1)
+✅ Estrutura inicial do projeto criada  
+✅ Menu principal funcional  
+✅ CRUD básico de despesas, usuários e tipos  
+✅ Persistência em arquivos TXT  
+✅ Criptografia MD5 implementada  
+
+---
+
+## 🚀 Fase 2 — Prova de Conceito (PoC)
+🎯 Objetivo: Validar persistência e arquitetura POO
+
+**Tarefas Técnicas:**
+- [ ] Refatorar `Main.java` para integrar camadas `Service` e `Model`
+- [ ] Corrigir escrita/leitura de `despesas.txt`
+- [ ] Adicionar controle de exceções e logs básicos
+- [ ] Validar relação entre `Despesa` e `Pagamento`
+- [ ] Criar simulação de usuários com login/senha
+
+🕓 Duração: 1 semana  
+📅 Sprint 1 — PoC  
+
+---
+
+## 💡 Fase 3 — MVP (v1.0.0)
+🎯 Objetivo: Entregar sistema funcional com fluxo completo
+
+**Tarefas Técnicas:**
+- [ ] Implementar fluxo real de cadastro e login
+- [ ] Implementar edição e exclusão de despesas
+- [ ] Adicionar filtro de listagem por status e período
+- [ ] Criar submenu de edição
+- [ ] Melhorar UX no terminal (menus claros)
+
+🕓 Duração: 2 semanas  
+📅 Sprint 2 — MVP  
+
+---
+
+## 🧩 Fase 4 — Refinamento (v1.1.0)
+🎯 Objetivo: Melhorar arquitetura e legibilidade
+
+**Tarefas Técnicas:**
+- [ ] Organizar logs e mensagens de erro
+- [ ] Modularizar serviços e utilitários
+- [ ] Adicionar testes unitários simples
+- [ ] Criar versão final documentada (PDF/README)
+
+📅 Sprint 3 — Refinamento Final  
