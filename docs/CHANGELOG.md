@@ -37,3 +37,19 @@ Dar início à **Fase 2 (PoC e MVP)** do sistema, com uma estrutura organizada p
 - README completo e documentação inicial.
 
 ---
+## v1.0.0 - MVP
+
+- MVP concluído e publicado no repositório de produção (`main`).
+- Documentação central em `docs/README.md` e `docs/roadmap.txt` atualizada.
+- Estrutura de tarefas criada e registrada em `tasks/kanban.txt` e `tasks/done.txt`.
+- Base do domínio com classes: `Despesa`, `TipoDespesa`, `Usuario`, `Alimentacao`, `Transporte`, `Eventual`, `Pagavel`.
+- Utilitários: `CriptografiaUtil`, `ArquivoUtil`, `SistemaController`, `Main` para execução.
+- Dados de exemplo em `data/usuarios.txt`, `data/despesas.txt`, `data/tipos.txt`.
+
+Tags:
+- `v1.0.0` (release principal do MVP)
+- `mvp` (marcador de marco)
+
+Commits relacionados:
+- `04e6f94` squash raiz com toda a estrutura consolidada
+- `639a0dc` commit atual baseado no squash

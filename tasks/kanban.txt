@@ -18,5 +18,6 @@ FASE 2 → PoC e MVP
 
 🟪 DONE
 - Estrutura de tarefas criada
+- MVP pronto e publicado (tag v1.0.0)
 - Planejamento PoC definido
 - README e CHANGELOG atualizados

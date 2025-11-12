@@ -12,3 +12,6 @@
 ✔ Criado roadmap técnico
 ✔ Atualizado README e CHANGELOG
 ✔ Definida Fase 2 (PoC) e Fase 3 (MVP)
+MVP concluído e documentado (tag v1.0.0)
+Tags criadas: v1.0.0, mvp
+Estrutura de tarefas criada e kanban atualizado
