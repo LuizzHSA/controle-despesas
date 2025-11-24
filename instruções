@@ -1,0 +1,79 @@
+Sistema de Controle de Despesas FINAL
+Sistema de controle de despesas que permita ao usuário gerenciar despesas e pagamentos (Conciliação da despesa). O sistema deve conter os seguintes recursos:
+
+Menu Principal
+O sistema deve apresentar um menu principal com as seguintes opções:
+
+Entrar Despesa
+Anotar Pagamento
+Listar Despesas em Aberto no período
+Listar Despesas Pagas no período
+Gerenciar Tipos de Despesa
+Gerenciar Usuários
+Sair
+Entrar Despesa
+O usuário pode inserir uma despesa, incluindo detalhes como descrição, valor, data de vencimento e categoria (por exemplo, Alimentação, Transporte, etc.).
+
+Anotar Pagamento
+O usuário pode anotar um pagamento para uma despesa específica, incluindo a data e o valor do pagamento.
+
+Listar Despesas
+O usuário pode visualizar todas as despesas, filtradas por status (pagas, pendentes) ou categoria. Após listar as despesas, o sistema deve apresentar um submenu com as seguintes opções:
+
+Editar Despesa
+Excluir Despesa
+Voltar ao Menu Principal
+Gerenciar Tipos de Despesa
+O usuário pode criar, editar, listar e excluir tipos de despesa. Todos os tipos de despesa devem ser armazenados em um arquivo de texto separado.
+
+Gerenciar Usuários
+O usuário pode cadastrar, editar e listar usuários, incluindo login e senha. As senhas devem ser criptografadas e armazenadas em um arquivo de texto separado dos demais.
+
+Banco de Dados em Arquivos de Texto
+Todas as despesas, tipos de despesa e usuários devem ser armazenados em arquivos de texto separados.
+
+Classes e Herança
+Crie classes abstratas e concretas para representar diferentes categorias de despesas (por exemplo, Transporte, Eventual, Supérfluo, etc.). Utilize herança para compartilhar comportamentos comuns.
+
+Interfaces e Polimorfismo
+Implemente interfaces para definir contratos comuns entre classes (por exemplo, Pagável) e use polimorfismo para permitir que um objeto se comporte como seu pai.
+
+Sobrecarga e Sobrescrita de Método Construtor
+Implemente construtores sobrecarregados para permitir a criação de despesas com diferentes detalhes. Utilize a sobrescrita para personalizar o comportamento em subclasses.
+
+Métodos e Atributos Estáticos
+Utilize métodos e atributos estáticos quando apropriado, como para manter uma contagem global de despesas.
+
+Criptografia de Senhas
+Implemente um método para criptografar as senhas dos usuários antes de armazená-las no arquivo de texto.
+
+
+
+PARTE 01
+
+Criar Repositório no GitHUB e compartilhar com prof.roldjunior@uninga.edu.br
+Criar arquivo README.md com a estratégia de construção do sistema em um texto descritivo
+Cada funcionalidade do sistema deverá ser representada por classes, atributos e métodos, abstraindo as regras de negócio no contexto da POO
+A documentação de cada classe a ser feita, com seus métodos e atributos podem estar descritas diretamente no README ou em arquivos separados, citados e linkados no README
+
+CRITÉRIOS DE AVALIAÇÃO:
+
+LEIA BEM O QUE PEDE O ENUNCIADO. OS CRITÉRIOS PARA AVALIAÇÃO:
+
+30%  - SISTEMA PARCIAL
+
+50%  - SISTEMA PARCIALMENTE FEITO MAS SEM OU COM MUITO POUCA DOCUMENTAÇÃO
+
+80%  - FEITO MAS SE A DOCUMENTAÇÃO COMPLETA
+
+100%  - ARQUIVO CORRETO E COM TODAS AS CONFIGURAÇÕES OK
+
+- entregas:
+
+B4T01.1 --> PRIMEIRO COMMIT 0.0.1 - REPO CRIADO, CLONADO, MENU FEITO E PRINTLN DE CADA FUNCIONALIDADE AO ACESSAR O MENÚ. 
+
+--> README EM /DOCS COM CHANGELOG DA ENTREGA
+
+B4T01.2 --> SEGUNDO COMMIT 0.0.1 - SEPARAÇÃO DE PRIORIDADES, POC, PROJETAR MVP
+
+B4T01.3 --> MVP PRONTO E DOCUMENTADO EM REPOSITÓRIO FINAL DE PRODUÇÃO. TAGS DE GIRT ADICIONADAS
